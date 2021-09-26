@@ -1,0 +1,6 @@
+.taskContainer {
+    display: flex;
+}
+.taskListContainer {
+    width: 50%;
+}
