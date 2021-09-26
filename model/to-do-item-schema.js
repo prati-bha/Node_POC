@@ -1,2 +1,10 @@
-const mongoose = require("mongoose").Mongoose;
-const {mongo} = require("mongoose")
+const mongoose = require("mongoose");
+
+const itemSchema = mongoose.Schema({
+    isDone: Boolean,
+    taskDescription: String,
+});
+
+module.exports = {
+    toDoItem: mongoose.model('toDoItem', itemSchema),
+}
