@@ -1,22 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import { Card } from 'antd';
+import { Card, Spin } from 'antd';
 import './App.css';
 import AddItem from './components/AddItem/index.js';
 import FilteredItem from './components/FilterItem/index';
-import { STORAGE_KEY } from './constants';
+import { API_ROUTES } from './constants';
+import request from './utils/request';
 function App() {
-  const [tasks, setTasks] = useState(JSON.parse(localStorage.getItem(STORAGE_KEY)) || []);
-  useEffect(() => {
-    const stringified = JSON.stringify(tasks);
-    localStorage.setItem(STORAGE_KEY, stringified)    
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState([]);
+  const getDataFromAPI = () => {
+    const apiBody = {
+      method: 'GET',
+    }
+    request(API_ROUTES.TO_DO_ITEMS.LIST_ITEMS, apiBody).then(res => {
+      setTasks(res);
+      setLoading(false);
   })
+  }
+  
+  useEffect(() => {
+    setLoading(true);
+    getDataFromAPI();  
+  }, [])
+ 
   return (
     <Card title="To-Do-App" className="App" type="inner">
-      <FilteredItem 
-        taskList={tasks} 
-        modifyTasks={setTasks} 
-        />
+      {loading 
+      ? 
+      <Spin /> 
+      :  
+      <>
+      <FilteredItem
+        taskList={tasks}
+        modifyTasks={setTasks} />
       <AddItem taskList={tasks} addTask={setTasks} />
+      </>
+      }
+     
     </Card>
   );
 }

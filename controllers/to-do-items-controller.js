@@ -1,22 +1,23 @@
-const { toDoItem } = require("../model/to-do-item-schema");
+const { addItem, editItem, listItem, deleteItem } = require('../services/to-do-items.service');
 
-const listOfItems = (req, res) => {
-    
-}
 
 const addToDoItem = async (req, res) => {
-    const item = req.body;
-    const newItem = new toDoItem(item);
+    await addItem(req, res);
+}
 
-    try {
-        await newItem.save();
-        res.json(newItem);
-    } catch (error) {
-        res.json({message: error.message});
-    }
+const deleteToDoItem = async (req, res) => {
+    await deleteItem(req, res);
+}
+const listToDoItems = async (req, res) => {
+    await listItem(req, res);
+}
+const editToDoItem = async (req, res) => {
+    await editItem(req, res);
 }
 
 module.exports = {
-    list: listOfItems,
     add: addToDoItem,
+    list: listToDoItems,
+    edit: editToDoItem,
+    delete: deleteToDoItem,
 }

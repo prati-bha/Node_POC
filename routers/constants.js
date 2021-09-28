@@ -6,6 +6,7 @@ module.exports = {
             EDIT_ITEM : '/edit', 
             DELETE_ITEM : '/delete',
             UPDATE_ITEM : '/update',
+            LIST_ITEM: '/list',
         }
     }
 }
