@@ -4,12 +4,11 @@ import { Input } from 'antd';
 
 function EditItem(props) {
     const [value, setValue] = useState('');
-    const { idx, taskList, modifyTasks } = props;
+    const { idx, taskList } = props;
     const editTask = () => {
         const currentTask = [...taskList];
-        const index = currentTask.findIndex((item) => item.uniqueTaskId === idx)
+        const index = currentTask.findIndex((item) => item.id === idx)
         currentTask[index].taskDescription = value;
-        modifyTasks(currentTask);
     }
     useEffect(editTask, [value])
     return (

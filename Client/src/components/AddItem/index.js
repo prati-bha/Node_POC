@@ -3,27 +3,26 @@ import { Button, Input } from 'antd';
 import './AddItem.css';
 import request from '../../utils/request';
 import { API_ROUTES } from '../../constants';
-let key = 0;
 function AddItem(props) {
     const { addTask, taskList } = props;
     const [currentTask, setCurrentTask] = useState('');
     const addToTaskList = () => {
-        const currentTaskObject = {
-            isDone: false,
-            taskDescription: currentTask,
-            isEdit: false,
-            uniqueTaskId: key,
-        }
-        setCurrentTask('');
-        addTask([...taskList, currentTaskObject]);
-        key = key + 1;
         const apiBody = {
             method: 'POST',
-            body: {taskDescription: currentTask,
-            isDone: false,}
+            body: {
+                taskDescription: currentTask,
+                isDone: false
+            }
         }
         request(API_ROUTES.TO_DO_ITEMS.ADD_ITEM, apiBody).then(res => {
-            console.log(res);
+            const currentTaskObject = {
+                isDone: false,
+                taskDescription: currentTask,
+                isEdit: false,
+                id: res._id,
+            }
+            setCurrentTask('');
+            addTask([...taskList, currentTaskObject]);
         })
     }
     return (
