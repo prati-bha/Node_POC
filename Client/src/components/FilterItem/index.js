@@ -42,9 +42,7 @@ const FilterItem = () => {
                 }
             }
         }
-        request(API_ROUTES.TO_DO_ITEMS.EDIT_ITEM, apiBody).then(res => {
-            notification.success({ message: res.message });
-        })
+        request(API_ROUTES.TO_DO_ITEMS.EDIT_ITEM, apiBody).then(res => {})
     }
 
     const deleteItem = (id) => {

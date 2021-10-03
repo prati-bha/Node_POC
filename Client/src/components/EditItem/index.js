@@ -6,9 +6,11 @@ function EditItem(props) {
     const [value, setValue] = useState('');
     const { idx, taskList } = props;
     const editTask = () => {
-        const currentTask = [...taskList];
-        const index = currentTask.findIndex((item) => item.id === idx)
-        currentTask[index].taskDescription = value;
+            if(value.length > 0) {
+                const currentTask = [...taskList];
+                const index = currentTask.findIndex((item) => item.id === idx)
+                currentTask[index].taskDescription = value;
+            }
     }
     useEffect(editTask, [value])
     return (
