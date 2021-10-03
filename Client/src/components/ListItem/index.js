@@ -22,10 +22,7 @@ function index(props) {
         if (type === 'edit') {
             currentTaskList[index].isEdit = true;
             modifyTasks(currentTaskList);
-        } else if (type === 'cancel') {
-            currentTaskList[index].isEdit = false;
-            modifyTasks(currentTaskList);
-        } else {
+        }  else {
             currentTaskList[index].isEdit = false;
             editItem(id, currentTaskList[index])
             modifyTasks(currentTaskList);
@@ -78,17 +75,6 @@ function index(props) {
                         >
                             Done
                         </a>
-                            <a
-                                style={{ marginLeft: '20px' }}
-
-                                onClick={() => {
-                                    editTask(record.id, 'cancel')
-                                }
-                                }
-
-                            >
-                                Cancel
-                            </a>
                         </>
                             :
                             <a
