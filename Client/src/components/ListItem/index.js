@@ -1,8 +1,9 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import { Checkbox, List, Button } from 'antd';
-import { DeleteOutlined, EditOutlined, RightOutlined } from '@ant-design/icons';
+import { Checkbox, Table } from 'antd';
 import EditItem from '../EditItem/index';
 import './List.css';
+import AddItem from '../AddItem';
 function index(props) {
     const { taskList, modifyTasks, source, deleteItem, editItem } = props;
     const changeTaskStatus = (e, id) => {
@@ -28,50 +29,79 @@ function index(props) {
         }
 
     }
+    const ITEM_COLUMNS = [
+        {
+            title: 'Is Done',
+            dataIndex: 'isDone',
+            key: 'isDone',
+            render: (text, record) => {
+                return <Checkbox
+                    checked={record.isDone}
+                    onChange={(e) => changeTaskStatus(e, record.id)}
+                />
+            },
+            width: "20%"
+        },
+        {
+            title: 'Item Description',
+            dataIndex: 'taskDescription',
+            key: 'taskDescription',
+            render: (text, record) => {
+                if (record.isEdit) {
+                    return <EditItem
+                        idx={record.id}
+                        editItem={editItem}
+                        taskList={taskList}
+                        modifyTasks={modifyTasks}
+                    />
+                }
+                return text
+            },
+            width: "60%"
+        },
+        {
+            title: 'Action',
+            dataIndex: 'action',
+            key: 'action',
+            render: (text, record) => {
+                const actionUI =
+                    <>
+                        {record.isEdit ? <a
+                            onClick={() => editTask(record.id, 'done')
+                            }
+                        >
+                            Done
+                        </a>
+                            :
+                            <a
+                                onClick={() => editTask(record.id, 'edit')}
+                            >
+                                Edit
+                            </a>
+                        }
+                    </>
+                return <>{actionUI} 
+                <a
+                    style={{marginLeft: '20px'}}
+                    onClick={() => deleteTask(record.id)}>
+                    Delete
+                </a>
+                </>
+
+            },
+            width: "20%"
+        },
+    ];
     return (
-        <List
+        <Table
+            pagination={false}
+            columns={ITEM_COLUMNS}
             itemLayout="horizontal"
             dataSource={source}
-            renderItem={({ isEdit, isDone, taskDescription, id }, index) => (
-                <List.Item>
-                    <Checkbox
-                        checked={isDone}
-                        onChange={(e) => changeTaskStatus(e, id)}
-                    />
-                    {isEdit ?
-                        <EditItem
-                            idx={id}
-                            editItem={editItem}
-                            taskList={taskList}
-                            modifyTasks={modifyTasks}
-                        />
-                        :
-                        <p>
-                            {taskDescription}
-                        </p>}
-                    <Button
-                        type="link"
-                        onClick={() => deleteTask(id)}>
-                        <DeleteOutlined />
-                    </Button>
-                    {
-                        isEdit ?
-                            <Button
-                                type="link"
-                                onClick={() => editTask(id, 'done')}
-                            >
-                                <RightOutlined />
-                            </Button>
-                            :
-                            <Button
-                                type="link"
-                                onClick={() => editTask(id, 'edit')}
-                            >
-                                <EditOutlined />
-                            </Button>
-                    }
-                </List.Item>
-            )}
+            footer={() => <AddItem
+                taskList={taskList}
+                addTask={modifyTasks}
+            />}
         />
     );
 }

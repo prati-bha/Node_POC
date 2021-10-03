@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Tabs, Spin, notification } from 'antd';
 import List from '../ListItem/index';
-import AddItem from '../AddItem/index.js';
 import { API_ROUTES } from '../../constants';
 import request from '../../utils/request';
 
@@ -22,7 +21,6 @@ const FilterItem = () => {
             method: 'GET',
         }
         request(API_ROUTES.TO_DO_ITEMS.LIST_ITEMS, apiBody).then(res => {
-            console.log(res)
             const taskList = [...res];
             const newRes = taskList.map((eachItem) => {
                 const updated = { ...eachItem, isEdit: false, id: eachItem._id }
@@ -36,8 +34,13 @@ const FilterItem = () => {
     const editItem = (id, updatedBody) => {
         const apiBody = {
             method: 'PUT',
-            id,
-            data: updatedBody
+            body: {
+                id,
+                data: {
+                    isDone: updatedBody.isDone,
+                    taskDescription: updatedBody.taskDescription
+                }
+            }
         }
         request(API_ROUTES.TO_DO_ITEMS.EDIT_ITEM, apiBody).then(res => {
             notification.success({ message: res.message });
@@ -47,7 +50,9 @@ const FilterItem = () => {
     const deleteItem = (id) => {
         const apiBody = {
             method: 'DELETE',
-            id,
+            body: {
+                id
+            }
         }
         request(API_ROUTES.TO_DO_ITEMS.DELETE_ITEM, apiBody).then(res => {
             notification.success({ message: res.message });
@@ -91,10 +96,6 @@ const FilterItem = () => {
                     />
                 </TabPane>
             </Tabs>
-            <AddItem
-                taskList={taskList}
-                addTask={modifyTasks}
-            />
         </>
     )
 };

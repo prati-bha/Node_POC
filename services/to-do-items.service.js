@@ -27,7 +27,7 @@ const editToDoItem = async (req, res) => {
     const itemId = req.body.id;
     const updatedBody = req.body.data;
     try {
-        await toDoItem.updateOne(itemId,updatedBody );
+        await toDoItem.updateOne({_id: itemId}, updatedBody );
         res.json({data: toDoItem, message: "Item Updated"});
     } catch (error) {
         res.json({message: error.message});
@@ -37,7 +37,7 @@ const editToDoItem = async (req, res) => {
 const deleteToDoItem = async (req, res) => {
     const itemId = req.body.id;
     try {
-        await toDoItem.deleteOne(itemId);
+        await toDoItem.deleteOne({_id: itemId});
         res.json({data: toDoItem, message: "Item Deleted"});
     } catch (error) {
         res.json({message: error.message});

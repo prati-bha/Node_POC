@@ -27,7 +27,7 @@ function AddItem(props) {
     }
     return (
         <div className="addItemContainer">
-            <Input type="text" onChange={(e) => setCurrentTask(e.target.value)} value={currentTask} />
+            <Input type="text" onChange={(e) => setCurrentTask(e.target.value)} value={currentTask} placeholder="Enter New Task" />
             <Button type="button" onClick={addToTaskList} disabled={!currentTask}>Add Task</Button>
         </div>
     );
