@@ -22,6 +22,9 @@ function index(props) {
         if (type === 'edit') {
             currentTaskList[index].isEdit = true;
             modifyTasks(currentTaskList);
+        } else if (type === 'cancel') {
+            currentTaskList[index].isEdit = false;
+            modifyTasks(currentTaskList);
         } else {
             currentTaskList[index].isEdit = false;
             editItem(id, currentTaskList[index])
@@ -66,12 +69,27 @@ function index(props) {
             render: (text, record) => {
                 const actionUI =
                     <>
-                        {record.isEdit ? <a
-                            onClick={() => editTask(record.id, 'done')
+                        {record.isEdit ? <><a
+                            onClick={() => {
+                                    editTask(record.id, 'done')
                             }
+                            }
+
                         >
                             Done
                         </a>
+                            <a
+                                style={{ marginLeft: '20px' }}
+
+                                onClick={() => {
+                                    editTask(record.id, 'cancel')
+                                }
+                                }
+
+                            >
+                                Cancel
+                            </a>
+                        </>
                             :
                             <a
                                 onClick={() => editTask(record.id, 'edit')}
@@ -80,12 +98,12 @@ function index(props) {
                             </a>
                         }
                     </>
-                return <>{actionUI} 
-                <a
-                    style={{marginLeft: '20px'}}
-                    onClick={() => deleteTask(record.id)}>
-                    Delete
-                </a>
+                return <>{actionUI}
+                    <a
+                        style={{ marginLeft: '20px' }}
+                        onClick={() => deleteTask(record.id)}>
+                        Delete
+                    </a>
                 </>
 
             },
